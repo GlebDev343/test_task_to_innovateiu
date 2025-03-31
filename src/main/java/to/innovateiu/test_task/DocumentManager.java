@@ -61,7 +61,7 @@ public class DocumentManager {
      * @return optional document
      */
     public Optional<Document> findById(String id) {
-        return Optional.of(storage.get(id));
+        return Optional.ofNullable(storage.get(id));
     }
 
     private boolean matchesSearchRequest(Document doc, SearchRequest request) {
@@ -84,13 +84,13 @@ public class DocumentManager {
         }
 
         if (request.getCreatedFrom() != null) {
-            if (doc.getCreated() != null || doc.getCreated().isBefore(request.getCreatedFrom())) {
+            if (doc.getCreated() == null || doc.getCreated().isBefore(request.getCreatedFrom())) {
                 return false;
             }
         }
 
         if (request.getCreatedTo() != null) {
-            if (doc.getCreated() != null || doc.getCreated().isAfter(request.getCreatedTo())) {
+            if (doc.getCreated() == null || doc.getCreated().isAfter(request.getCreatedTo())) {
                 return false;
             }
         }
